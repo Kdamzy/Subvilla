@@ -37,6 +37,32 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
   }
 });
 
+
+// Update user
+
+const updatedUser = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        firstname: req?.body?.firstname,
+        lastname: req?.body?.lastname,
+        email: req?.body?.email,
+        mobile: req?.body?.mobile,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json(updatedUser);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 // Get details of all users
 const getallUser = asyncHandler(async (req, res) => {
   try {
@@ -82,4 +108,5 @@ module.exports = {
   getallUser,
   getaUser,
   deleteaUser,
+  updatedUser,
 };
